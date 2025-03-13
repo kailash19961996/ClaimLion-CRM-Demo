@@ -1,6 +1,6 @@
 # ClaimLion CRM Demo
 
-A simple CRM application for a litigation law firm, built with Flask and AWS DynamoDB. Features include client management, case management, deadline tracking, and task management.
+A simple CRM application for a litigation law firm, built with Flask and AWS DynamoDB.
 
 ## Deployment
 
