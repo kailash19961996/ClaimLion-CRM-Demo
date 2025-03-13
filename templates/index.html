@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClaimLion CRM Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #1a3c5e;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .nav-tabs .nav-link {
+            color: #1a3c5e;
+            font-weight: 500;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #1a3c5e;
+            color: white;
+            border-color: #1a3c5e;
+        }
+
+        .tab-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #444;
+        }
+
+        .form-control, .form-control:focus {
+            border-radius: 5px;
+            border: 1px solid #d1d5db;
+            box-shadow: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #1a3c5e;
+        }
+
+        .btn-primary {
+            background-color: #1a3c5e;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #2b5a8c;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #1a3c5e;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .card {
+            background-color: white;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: #1a3c5e;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .tab-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ClaimLion CRM Demo</h1>
+    </div>
+    <div class="container">
+        <ul class="nav nav-tabs" id="crmTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="clients-tab" data-bs-toggle="tab" href="#clients" role="tab">Clients</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="cases-tab" data-bs-toggle="tab" href="#cases" role="tab">Cases</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="deadlines-tab" data-bs-toggle="tab" href="#deadlines" role="tab">Deadlines</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tasks-tab" data-bs-toggle="tab" href="#tasks" role="tab">Tasks</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="crmTabContent">
+            <!-- Clients Tab -->
+            <div class="tab-pane fade show active" id="clients" role="tabpanel">
+                <h3 class="section-title">Add Client</h3>
+                <form id="customerForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="phone">
+                    </div>
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="notes"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Client</button>
+                </form>
+
+                <h3 class="section-title mt-5">Client List</h3>
+                <div id="customerList"></div>
+            </div>
+
+            <!-- Cases Tab -->
+            <div class="tab-pane fade" id="cases" role="tabpanel">
+                <h3 class="section-title">Add Case</h3>
+                <form id="caseForm">
+                    <div class="mb-3">
+                        <label for="case_number" class="form-label">Case Number</label>
+                        <input type="text" class="form-control" id="case_number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="court" class="form-label">Court</label>
+                        <input type="text" class="form-control" id="court" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-control" id="status" required>
+                            <option value="Open">Open</option>
+                            <option value="Closed">Closed</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="client_ids" class="form-label">Associated Clients (Comma-separated IDs)</label>
+                        <input type="text" class="form-control" id="client_ids">
+                    </div>
+                    <div class="mb-3">
+                        <label for="start_date" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="start_date" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Case</button>
+                </form>
+
+                <h3 class="section-title mt-5">Case List</h3>
+                <div id="caseList"></div>
+            </div>
+
+            <!-- Deadlines Tab -->
+            <div class="tab-pane fade" id="deadlines" role="tabpanel">
+                <h3 class="section-title">Add Deadline</h3>
+                <form id="deadlineForm">
+                    <div class="mb-3">
+                        <label for="deadline_case_id" class="form-label">Case ID</label>
+                        <input type="text" class="form-control" id="deadline_case_id" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deadline_title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="deadline_title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deadline_description" class="form-label">Description</label>
+                        <textarea class="form-control" id="deadline_description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="due_date" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="due_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deadline_status" class="form-label">Status</label>
+                        <select class="form-control" id="deadline_status" required>
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Deadline</button>
+                </form>
+
+                <h3 class="section-title mt-5">Upcoming Deadlines</h3>
+                <div id="deadlineList"></div>
+            </div>
+
+            <!-- Tasks Tab -->
+            <div class="tab-pane fade" id="tasks" role="tabpanel">
+                <h3 class="section-title">Add Task</h3>
+                <form id="taskForm">
+                    <div class="mb-3">
+                        <label for="task_case_id" class="form-label">Case ID</label>
+                        <input type="text" class="form-control" id="task_case_id" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="task_customer_id" class="form-label">Client ID (Optional)</label>
+                        <input type="text" class="form-control" id="task_customer_id">
+                    </div>
+                    <div class="mb-3">
+                        <label for="task_title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="task_title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="task_description" class="form-label">Description</label>
+                        <textarea class="form-control" id="task_description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="task_due_date" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="task_due_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="assigned_to" class="form-label">Assigned To</label>
+                        <input type="text" class="form-control" id="assigned_to" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="task_status" class="form-label">Status</label>
+                        <select class="form-control" id="task_status" required>
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Task</button>
+                </form>
+
+                <h3 class="section-title mt-5">Task List</h3>
+                <div id="taskList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // --- Clients Tab ---
+        async function fetchCustomers() {
+            const response = await fetch('/api/customers');
+            const customers = await response.json();
+            const customerList = document.getElementById('customerList');
+            customerList.innerHTML = '';
+            customers.forEach(customer => {
+                const card = `
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">${customer.name}</h5>
+                            <p class="card-text">Email: ${customer.email}</p>
+                            <p class="card-text">Phone: ${customer.phone || 'N/A'}</p>
+                            <p class="card-text">Notes: ${customer.notes || 'N/A'}</p>
+                            <p class="card-text"><small>ID: ${customer.customer_id}</small></p>
+                        </div>
+                    </div>`;
+                customerList.innerHTML += card;
+            });
+        }
+
+        document.getElementById('customerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const customer = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                notes: document.getElementById('notes').value
+            };
+            await fetch('/api/customers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(customer)
+            });
+            document.getElementById('customerForm').reset();
+            fetchCustomers();
+        });
+
+        // --- Cases Tab ---
+        async function fetchCases() {
+            const response = await fetch('/api/cases');
+            const cases = await response.json();
+            const caseList = document.getElementById('caseList');
+            caseList.innerHTML = '';
+            cases.forEach(c => {
+                const card = `
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Case #${c.case_number}</h5>
+                            <p class="card-text">Court: ${c.court}</p>
+                            <p class="card-text">Status: ${c.status}</p>
+                            <p class="card-text">Description: ${c.description || 'N/A'}</p>
+                            <p class="card-text">Clients: ${c.client_ids.join(', ')}</p>
+                            <p class="card-text">Start Date: ${c.start_date}</p>
+                            <p class="card-text"><small>ID: ${c.case_id}</small></p>
+                        </div>
+                    </div>`;
+                caseList.innerHTML += card;
+            });
+        }
+
+        document.getElementById('caseForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const caseData = {
+                case_number: document.getElementById('case_number').value,
+                court: document.getElementById('court').value,
+                status: document.getElementById('status').value,
+                description: document.getElementById('description').value,
+                client_ids: document.getElementById('client_ids').value.split(',').map(id => id.trim()),
+                start_date: document.getElementById('start_date').value
+            };
+            await fetch('/api/cases', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(caseData)
+            });
+            document.getElementById('caseForm').reset();
+            fetchCases();
+        });
+
+        // --- Deadlines Tab ---
+        async function fetchDeadlines() {
+            const response = await fetch('/api/deadlines');
+            const deadlines = await response.json();
+            const deadlineList = document.getElementById('deadlineList');
+            deadlineList.innerHTML = '';
+            deadlines.forEach(d => {
+                const card = `
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">${d.title}</h5>
+                            <p class="card-text">Case ID: ${d.case_id}</p>
+                            <p class="card-text">Due Date: ${d.due_date}</p>
+                            <p class="card-text">Description: ${d.description || 'N/A'}</p>
+                            <p class="card-text">Status: ${d.status}</p>
+                            <p class="card-text"><small>ID: ${d.deadline_id}</small></p>
+                        </div>
+                    </div>`;
+                deadlineList.innerHTML += card;
+            });
+        }
+
+        document.getElementById('deadlineForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const deadline = {
+                case_id: document.getElementById('deadline_case_id').value,
+                title: document.getElementById('deadline_title').value,
+                description: document.getElementById('deadline_description').value,
+                due_date: document.getElementById('due_date').value,
+                status: document.getElementById('deadline_status').value
+            };
+            await fetch('/api/deadlines', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(deadline)
+            });
+            document.getElementById('deadlineForm').reset();
+            fetchDeadlines();
+        });
+
+        // --- Tasks Tab ---
+        async function fetchTasks() {
+            const response = await fetch('/api/tasks');
+            const tasks = await response.json();
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+            tasks.forEach(t => {
+                const card = `
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">${t.title}</h5>
+                            <p class="card-text">Case ID: ${t.case_id}</p>
+                            <p class="card-text">Client ID: ${t.customer_id || 'N/A'}</p>
+                            <p class="card-text">Description: ${t.description || 'N/A'}</p>
+                            <p class="card-text">Due Date: ${t.due_date}</p>
+                            <p class="card-text">Assigned To: ${t.assigned_to}</p>
+                            <p class="card-text">Status: ${t.status}</p>
+                            <p class="card-text"><small>ID: ${t.task_id}</small></p>
+                        </div>
+                    </div>`;
+                taskList.innerHTML += card;
+            });
+        }
+
+        document.getElementById('taskForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const task = {
+                case_id: document.getElementById('task_case_id').value,
+                customer_id: document.getElementById('task_customer_id').value,
+                title: document.getElementById('task_title').value,
+                description: document.getElementById('task_description').value,
+                due_date: document.getElementById('task_due_date').value,
+                assigned_to: document.getElementById('assigned_to').value,
+                status: document.getElementById('task_status').value
+            };
+            await fetch('/api/tasks', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(task)
+            });
+            document.getElementById('taskForm').reset();
+            fetchTasks();
+        });
+
+        // Initial loads
+        fetchCustomers();
+        fetchCases();
+        fetchDeadlines();
+        fetchTasks();
+    </script>
+</body>
+</html>
