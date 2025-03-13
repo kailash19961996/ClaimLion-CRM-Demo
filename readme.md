@@ -11,7 +11,10 @@ A simple CRM application for a litigation law firm, built with Flask and AWS Dyn
 6. Run the app: `python app.py`
 
 ## Deployment
-Deployed on [Render/Heroku/etc.] (see deployment instructions below).
+
+The app is deployed on Render and uses AWS DynamoDB for the database.
+
+- **Live URL**: [ClaimLion](https://claimlion-crm-demo.onrender.com/)
 
 ## Features
 - Client management (CRUD)
